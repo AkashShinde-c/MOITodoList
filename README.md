@@ -1,4 +1,4 @@
-#Added the feature to record create date and completed date of a Todo
+# Added the feature to record create date and completed date of a Todo
 <img width="514" alt="image" src="https://github.com/AkashShinde-c/MOITodoList/assets/54067548/d4b62cc2-683e-477b-8fa9-1e0b4ded7b02">
 
 
