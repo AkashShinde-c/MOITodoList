@@ -12,6 +12,8 @@ state persistent:
 // where it can possess multiple fields and methods
 class Todo:
     field name String
+    field create_time String
+    field done_time String
     field completed Bool
 
 // InitOwner!() deployer is a constructor that assigns a 
@@ -28,21 +30,24 @@ func onlyOwner():
 
 // Add!() is an invokable that adds the given Todo to
 // the list of  Todo's
-endpoint invokable Add!(name String):
+endpoint invokable Add!(name String,time String):
     onlyOwner()
 
-    var todo = Todo{name: name, completed: false}
+    var todo = Todo{name: name, create_time: time,done_time:"In Progress",completed: false}
 
     mutate todos <- TodoList.State.todos:
         todos = append(todos, todo)
 
 // MarkCompleted!() is an invokable that marks the given
 // todo as completed
-endpoint invokable MarkTodoCompleted!(id U64):
+endpoint invokable MarkTodoCompleted!(id U64, done_time String):
     onlyOwner()
 
     mutate todos <- TodoList.State.todos:
             todos[id].completed = true
+            todos[id].done_time = done_time
+
+ 
 
 // You might have noticed
 // We used '!' after the endpoint name

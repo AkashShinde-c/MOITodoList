@@ -3,10 +3,11 @@ import { VoyageProvider, Wallet, getLogicDriver } from 'js-moi-sdk';
 import { info, success } from "./utils/toastWrapper";
 import { Toaster } from "react-hot-toast";
 import Loader from "./components/Loader";
+import './App.css'
 
 // ------- Update with your credentials ------------------ //
-const logicId = "Logic Id Here"
-const mnemonic = "Your Mnemonic Here"
+const logicId = "0x080000b5a4b0dc8e2ae52420d92037e7911bf2f212632c3ac167dd07ea0dd2f4db1826"
+const mnemonic = "screen obtain vintage maple invite cause coil vital napkin else solar measure"
 
 const logicDriver = await gettingLogicDriver(
   logicId,
@@ -51,11 +52,13 @@ function App() {
 
   const add = async (e) => {
     e.preventDefault();
+    const time = new Date().toLocaleString();
+    console.log(time);
     try {
       setAdding(true)
       info("Adding Todo ...");
       
-      const ix = await logicDriver.routines.Add([todoName]).send({
+      const ix = await logicDriver.routines.Add([todoName,time]).send({
         fuelPrice: 1,
         fuelLimit: 1000,
       });
@@ -73,9 +76,10 @@ function App() {
   };
 
   const markCompleted = async (id) => {
+    const done_time = new Date().toLocaleString();
     try {
       setMarking(id)
-      const ix = await logicDriver.routines.MarkTodoCompleted([id]).send({
+      const ix = await logicDriver.routines.MarkTodoCompleted([id,done_time]).send({
         fuelPrice: 1,
         fuelLimit: 1000,
       });
@@ -91,11 +95,13 @@ function App() {
     }
   };
 
+ 
+
   return (
     <>
       <Toaster />
       <section class="section-center">
-        <form class="todo-form">
+        <form class="todo-form" >
           <p class="alert"></p>
           <h3>Todo buddy</h3>
           <div class="form-control">
@@ -106,6 +112,7 @@ function App() {
               type="text"
               id="todo"
               placeholder="e.g. Attend Moi Event"
+              
             />
             <button onClick={add} type="submit" class="submit-btn">
             {adding ? <Loader color={"#000"} loading={adding} /> :"Add Todo"}
@@ -116,8 +123,27 @@ function App() {
           {todos.map((todo, index) => {
             return (
               <div class="todo-list">
-                {todo.name}
+                <span>
+                <span className="lbl">
+                Task :   
+                </span>
+                {" "+todo.name}
+                </span>
+                <span>
+                <span className="lbl">
+                Date Created :
+                </span>
+                {" "+todo.create_time}
+                </span>
+                <span>
+                <span className="lbl">
+                Date Completed :  
+                </span>
+                {" "+todo.done_time}
+                </span>
+                
                 {todo.completed ? (
+        
                   <img className="icon" src="/images/check.svg" />
                 ) : (
                   <span
